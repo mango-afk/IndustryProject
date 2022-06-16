@@ -1,0 +1,599 @@
+{
+	"info": {
+		"_postman_id": "96eb2963-6fe9-4ad3-a432-b9cccb3e9bf2",
+		"name": "securemation-test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20713718"
+	},
+	"item": [
+		{
+			"name": "Start Process Instance",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", () => {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"const response = pm.response.json();\r",
+							"\r",
+							"pm.globals.set(\"process-instance-id\", response);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "wbadmin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "wbadmin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/services/rest/server/containers/{{container-id}}/processes/{{process-id}}/instances",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"services",
+						"rest",
+						"server",
+						"containers",
+						"{{container-id}}",
+						"processes",
+						"{{process-id}}",
+						"instances"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user task",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"\r",
+							"pm.globals.set(\"user-task-id\", response[\"task-summary\"][0][\"task-id\"]);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "wbadmin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "wbadmin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/services/rest/server/queries/tasks/instances/process/:processinstanceID:",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"services",
+						"rest",
+						"server",
+						"queries",
+						"tasks",
+						"instances",
+						"process",
+						":processinstanceID:"
+					],
+					"variable": [
+						{
+							"key": "processinstanceID:",
+							"value": "{{process-instance-id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Start user task",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "wbadmin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "wbadmin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/services/rest/server/containers/{{container-id}}/tasks/:taskID:/states/started",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"services",
+						"rest",
+						"server",
+						"containers",
+						"{{container-id}}",
+						"tasks",
+						":taskID:",
+						"states",
+						"started"
+					],
+					"variable": [
+						{
+							"key": "taskID:",
+							"value": "{{user-task-id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Input Description",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "wbadmin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "wbadmin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/services/rest/server/containers/{{container-id}}/tasks/:taskID:/contents/input",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"services",
+						"rest",
+						"server",
+						"containers",
+						"{{container-id}}",
+						"tasks",
+						":taskID:",
+						"contents",
+						"input"
+					],
+					"variable": [
+						{
+							"key": "taskID:",
+							"value": "{{user-task-id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Finish user task",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "wbadmin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "wbadmin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"industry-query\" : \"Finance\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/services/rest/server/containers/{{container-id}}/tasks/:taskID:/states/completed",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"services",
+						"rest",
+						"server",
+						"containers",
+						"{{container-id}}",
+						"tasks",
+						":taskID:",
+						"states",
+						"completed"
+					],
+					"variable": [
+						{
+							"key": "taskID:",
+							"value": "{{user-task-id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get result overall",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"\r",
+							"pm.globals.set(\"threat-type-1\", response[\"variable-instance\"][5][\"old-value\"]);\r",
+							"pm.globals.set(\"threat-type-2\", response[\"variable-instance\"][6][\"old-value\"]);\r",
+							"pm.globals.set(\"threat-type-3\", response[\"variable-instance\"][7][\"old-value\"]);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "wbadmin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "wbadmin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/services/rest/server/containers/{{container-id}}/processes/instances/:processinstanceID:/variables/instances",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"services",
+						"rest",
+						"server",
+						"containers",
+						"{{container-id}}",
+						"processes",
+						"instances",
+						":processinstanceID:",
+						"variables",
+						"instances"
+					],
+					"variable": [
+						{
+							"key": "processinstanceID:",
+							"value": "{{process-instance-id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get mitigation 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "wbadmin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "wbadmin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"dmn-description\" : \"{{threat-type-1}}\"\r\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/services/rest/server/containers/{{container-id}}/dmn/models/{{mitigation-dmn}}/",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"services",
+						"rest",
+						"server",
+						"containers",
+						"{{container-id}}",
+						"dmn",
+						"models",
+						"{{mitigation-dmn}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get mitigation 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "wbadmin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "wbadmin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"dmn-description\" : \"{{threat-type-2}}\"\r\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/services/rest/server/containers/{{container-id}}/dmn/models/{{mitigation-dmn}}/",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"services",
+						"rest",
+						"server",
+						"containers",
+						"{{container-id}}",
+						"dmn",
+						"models",
+						"{{mitigation-dmn}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get mitigation 3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "wbadmin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "wbadmin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"dmn-description\" : \"{{threat-type-3}}\"\r\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/services/rest/server/containers/{{container-id}}/dmn/models/{{mitigation-dmn}}/",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"services",
+						"rest",
+						"server",
+						"containers",
+						"{{container-id}}",
+						"dmn",
+						"models",
+						"{{mitigation-dmn}}",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "wbadmin",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "wbadmin",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "\"http://localhost:8080/kie-server\""
+		}
+	]
+}
